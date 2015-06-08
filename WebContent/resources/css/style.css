@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+
+body {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal
+}
+
+.ui-growl {
+	top: 70px;
+	right: 10px;
+}
+
+.ui-layout-north {
+	z-index: 2 !important;
+	overflow: visible !important;
+	border: none;
+	margin: 0 0 0;
+	height: 0;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+	overflow: visible;
+}
+
+.ui-layout-center {
+	overflow: visible !important;
+	z-index: 1 !important;
+	overflow: visible !important;
+	margin: 0 0 0;
+}
+
+.ui-layout-center .ui-layout-unit-content {
+	overflow: visible !important;
+	overflow-y: hidden !important;
+}
+
+.rodape {
+	border: none;
+	margin: 0 0 0;
+	position: fixed;
+	text-align: center;
+}
+
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+
+.fc-event-skin {
+	border-color: #36c; /* default BORDER color */
+	background-color: #f30 !important; /* default BACKGROUND color */
+	color: #fff; /* default TEXT color */
+}
+
+.corpo {
+	z-index: 1 !important;
+	overflow: visible !important;
+	border: none;
+	margin: 0 auto;
+	width: 1000px;
+}
+
+.hide{
+	display: none !important; 
+	visibility: hidden !important;
+}
+
+.centralizado{
+	text-align: center !important;
+}
+
+.direita{
+	text-align: right !important;
+}
+
+.esquerda{
+	text-align: left !important;
+}
+
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
+  opacity: 1;
+  filter: Alpha(Opacity=35);
+  background-image: none;
+}

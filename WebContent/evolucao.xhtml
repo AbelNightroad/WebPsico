@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/resources/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="corpo">
+
+		<h:form id="evolucaoFrm">
+			<p:accordionPanel widgetVar="evolucaoTabs" id="accordion">
+
+				<p:tab id="pesquisaTab" title="Pesquisa Paciente">
+					<p:dataTable id="PacienteTb" rows="5" var="linha"
+						widgetVar="pacienteTb" style="margin: 15px;"
+						emptyMessage="Nenhum paciente encontrado."
+						value="#{evolucaoMB.listaPaciente}" selectionMode="single"
+						paginator="true" paginatorPosition="bottom"
+						selection="#{evolucaoMB.pacienteSelecionado}" rowKey="#{linha.id}">
+						<f:facet name="header">
+							<p:outputPanel layout="block" styleClass="esquerda">
+								<h:outputText value="Pesquisa por paciente em todas as colunas:" />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('pacienteTb').filter()" style="width:150px;"
+									placeholder="Digite uma palavra-chave" />
+							</p:outputPanel>
+						</f:facet>
+						<p:ajax event="rowSelect" listener="#{evolucaoMB.onRowSelect}"
+							update=":evolucaoFrm:accordion" />
+						<p:ajax event="rowUnselect" listener="#{evolucaoMB.onRowUnselect}"
+							update=":evolucaoFrm:accordion" />
+						<p:column headerText="Nome" sortBy="#{linha.nome}"
+							filterBy="#{linha.nome}" filterStyleClass="hide">
+							<p:outputLabel value="#{linha.nome}" />
+						</p:column>
+						<p:column headerText="Telefone Fixo"
+							sortBy="#{linha.telefoneFixo}" filterBy="#{linha.telefoneFixo}"
+							filterStyleClass="hide">
+							<p:outputLabel value="#{linha.telefoneFixo}" />
+						</p:column>
+						<p:column headerText="Telefone Celular"
+							sortBy="#{linha.telefoneCelular}"
+							filterBy="#{linha.telefoneCelular}" filterStyleClass="hide">
+							<p:outputLabel value="#{linha.telefoneCelular}" />
+						</p:column>
+						<p:column headerText="Email" sortBy="#{linha.email}"
+							filterBy="#{linha.email}" filterStyleClass="hide">
+							<p:outputLabel value="#{linha.email}" />
+						</p:column>
+						<p:column headerText="Id" sortBy="#{linha.desativado}"
+							filterBy="#{linha.id}" filterStyleClass="hide"
+							styleClass="centralizado">
+							<p:outputLabel value="#{linha.id}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+
+				<p:tab id="evolucaoTab" title="Evolução"
+					disabled="#{evolucaoMB.abaDesabilitada}">
+					<p:editor id="editor" widgetVar="editorWidget" height="250" 
+						controls="bold italic underline strikethrough font size style color bullets numbering alignleft center alignright justify undo redo link unlink print removeformat"
+						value="#{evolucaoMB.textoDoEditor}" width="1000" />
+					<h:panelGrid columns="3" style="margin-top: 10px">
+						<p:commandButton value="Salvar" update=":evolucaoFrm:accordion:evolucoesTb, :evolucaoFrm:accordion:editor"
+							action="#{evolucaoMB.salvarEvolucao}" />
+						<p:commandButton type="reset" value="Cancelar" action="#{evolucaoMB.cancelaEvolucao}"/>
+					</h:panelGrid>
+				</p:tab>
+
+				<p:tab title="Histórico de Evoluções" id="evolucaoAntigaTab"
+					disabled="#{evolucaoMB.abaDesabilitada}">
+					<p:dataTable id="evolucoesTb" var="linha" sortBy="#{linha.data}"
+						sortOrder="descending" value="#{evolucaoMB.listaEvolucoes}"
+						rows="5" paginator="true" paginatorPosition="bottom"
+						selectionMode="single"
+						emptyMessage="Nenhuma evolução foi encontrada."
+						selection="#{evolucaoMB.evolucaoSelecionada}" rowKey="#{linha.id}">
+						<p:ajax event="rowSelect"
+							listener="#{evolucaoMB.onRowSelectEvolucao}"
+							update=":evolucaoFrm:accordion:editor" />
+						<p:ajax event="rowUnselect"
+							listener="#{evolucaoMB.onRowUnselectEvolucao}"
+							update=":evolucaoFrm:accordion:editor" />
+						<p:column headerText="Data" width="15%" styleClass="centralizado">
+							<h:outputText value="#{linha.data}" rendered="true">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Evolução">
+							<p:outputLabel value="#{linha.texto}" escape="false"/>
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+
+			</p:accordionPanel>
+		</h:form>
+	</ui:define>
+</ui:composition>

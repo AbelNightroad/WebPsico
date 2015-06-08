@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputScript library="js" name="locale.js" />
+</h:head>
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="style.css" />
+	</f:facet>
+
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" styleClass="menu" visible="true">
+			<div id="cabecalho" class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12">
+						<ui:insert name="cabecalho">
+							<h:form id="formcab">
+								<p:growl id="messages" autoUpdate="true" showDetail="true" top="70px" right="10px" />
+								<p:menubar>
+									<p:menuitem value="Início" icon="ui-icon-home"
+										url="/principal.jsf" />
+									<p:submenu label="Cadastro">
+										<p:menuitem value="Gerencia Usuário"
+											url="/gerenciaUsuario.jsf"
+											disabled="#{usuarioMB.logado.isAtendente()}"
+											rendered="#{usuarioMB.logado.isAdm() or usuarioMB.logado.isPsicologa()}" />
+										<p:menuitem value="Gerencia Paciente"
+											url="/gerenciaPaciente.jsf" />
+									</p:submenu>
+									<p:menuitem value="Evolução" url="/evolucao.jsf"
+										disabled="#{usuarioMB.logado.isAtendente()}" />
+									<p:menuitem value="Anamnese" url="/anamnese.jsf"
+										disabled="#{usuarioMB.logado.isAtendente()}" />
+									<p:submenu label="Relatórios" >
+										<p:menuitem value="Usuários" target="_blank" ajax="false"
+											action="#{relatorioMB.gerarRelatorioUsuarios}" />
+											<p:menuitem value="Pacientes" target="_blank" ajax="false"
+											action="#{relatorioMB.gerarRelatorioPacientes}" />
+											<p:menuitem value="Contatos" target="_blank" ajax="false"
+											action="#{relatorioMB.gerarRelatorioContatos}" />
+											<p:menuitem value="Evoluções" target="_blank" ajax="false"
+											action="#{relatorioMB.gerarRelatorioEvolucoes}" />
+									</p:submenu>
+									<p:menuitem value="Sobre" onclick="PF('sobreWidget').show()" />
+
+									<f:facet name="options">
+										<p:inputText style="margin-right:10px" placeholder="Search" />
+										<p:commandButton id="logoutbtn" immediate="true"
+											value="#{loginMB.logado.login}" title="Sair do sistema"
+											icon="ui-icon-extlink" action="#{logoutMB.efetuarLogout}" />
+									</f:facet>
+								</p:menubar>
+							</h:form>
+						</ui:insert>
+					</div>
+				</div>
+			</div>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="corpo" collapsible="true"
+			gutter="2">
+			<div id="corpo">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12">
+						<ui:insert name="corpo" />
+					</div>
+				</div>
+			</div>
+		</p:layoutUnit>
+		<p:layoutUnit position="south" styleClass="rodape"
+			header="Trabalho Final TCC - 01/2015">
+			<div id="rodape">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12">
+						<ui:insert name="rodape" />
+					</div>
+				</div>
+			</div>
+		</p:layoutUnit>
+	</p:layout>
+	
+	<p:dialog closable="false" header="Sobre" modal="true"
+			showEffect="fade" resizable="false" draggable="false" widgetVar="sobreWidget">
+			<p:panelGrid>
+				<h1 align="center">Desenvolvido para o projeto final na
+					Universidade Estácio de Sá</h1>
+				<h2 align="center">Rio de Janeiro, 20 de Junho de 2015</h2>
+				<h2 align="center">Sistema WEB para o Gerenciamento da
+					Psicologia</h2>
+				<h3 align="center">
+					<p:outputLabel value="Bruno Fitzner - E-mail: brunofitzner1973@gmail.com" />
+				</h3>
+				<h3 align="center">
+					<p:outputLabel
+						value="Viviane Val Porto - E-mail: rosevalporto@gmail.com" />
+				</h3>
+				<h:form id="frmFecharSobre">
+					<div style="width: 180px; margin: 0 auto;">
+						<p:commandButton id="btnFechar" value="Fechar" onclick="PF('sobreWidget').hide()"/>
+					</div>
+				</h:form>
+			</p:panelGrid>
+		</p:dialog>
+</h:body>
+</html>

@@ -1,0 +1,88 @@
+<ui:composition template="/resources/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="corpo">
+		<h:form id="agenda">
+			<h:panelGrid id="agendaPainel" styleClass="corpo">
+				<p:schedule id="schedule" value="#{scheduleViewMB.eventModel}"
+					allDaySlot="false" aspectRatio="1.6" widgetVar="myschedule"
+					axisFormat="HH:mm" timeFormat="HH:mm"
+					style="width: 90%; margin: 0 auto" firstHour="7">
+
+					<p:ajax event="dateSelect"
+						listener="#{scheduleViewMB.onDateSelect}" update="eventDetails"
+						oncomplete="PF('eventDialog').show();" />
+					<p:ajax event="eventSelect"
+						listener="#{scheduleViewMB.onEventSelect}" update="eventDetails"
+						oncomplete="PF('eventDialog').show();" />
+					<p:ajax event="eventMove" listener="#{scheduleViewMB.onEventMove}"
+						update=":formcab:messages" />
+					<p:ajax event="eventResize"
+						listener="#{scheduleViewMB.onEventResize}"
+						update=":formcab:messages" />
+
+				</p:schedule>
+
+			</h:panelGrid>
+			<p:dialog widgetVar="eventDialog" header="Marcação de Consulta"
+				resizable="false" showEffect="clip" hideEffect="clip" modal="true"
+				appendTo="@(body)">
+				<p:panelGrid id="eventDetails" styleClass="semBorda" >
+					<p:row>
+						<p:column>
+							<h:outputLabel for="nomePaciente" value="Nome do Paciente:" />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputText id="nomePaciente"
+								value="#{scheduleViewMB.event.title}" required="true" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="nomePsicologa" value="Psicologa:" />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputText id="nomePsicologa"
+								value="#{scheduleViewMB.event.title}" required="true" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="from" value="Data:" />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputMask id="from" value="#{scheduleViewMB.event.startDate}"
+								mask="99/99/9999">
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3" />
+							</p:inputMask>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="hora" value="Hora:" />
+						</p:column>
+						<p:column colspan="2">
+							<p:inputMask id="hora" value="#{scheduleViewMB.event.data}"
+								mask="99:99">
+								<f:convertDateTime pattern="HH:MM" timeZone="GMT-3" />
+							</p:inputMask>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column colspan="3" styleClass="centralizado">
+							<p:commandButton id="marcarBtn" value="Marcar" 
+								actionListener="#{scheduleViewMB.addEvent}"
+								oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

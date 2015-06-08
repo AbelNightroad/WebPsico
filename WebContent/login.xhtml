@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/resources/css/style.css" />
+</h:head>
+<h:body style="background-image: url('resources/images/psi.png')">
+	<p:dialog modal="true" visible="true" closable="false"
+		showEffect="bounce" resizable="false" draggable="false" header="Login">
+		<p:messages>
+			<p:effect event="load" type="pulsate" delay="500" />
+		</p:messages>
+		<h:form id="form1">
+			<p:focus />
+			<p:panelGrid columns="2">
+				<h:outputText value="Login" />
+				<p:inputText value="#{loginMB.usuario.login}" required="true"
+					title="Login" placeholder="Login"
+					requiredMessage="Digite um nome de usuário, por favor!" />
+				<h:outputText value="Senha" />
+				<p:password value="#{loginMB.usuario.senha}"
+					title="Senha" placeholder="Senha" />
+			</p:panelGrid>
+			<p:spacer width="0" height="40" />
+			<p:commandButton value="Logar" action="#{loginMB.logar}" ajax="false" />
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>
