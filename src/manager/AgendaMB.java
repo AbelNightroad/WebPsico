@@ -3,14 +3,14 @@ package manager;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import modelo.schedule.Agenda;
-import modelo.schedule.AgendaEvent;
-import modelo.schedule.LazyModel;
+import modelo.Compromisso;
+import persistence.AgendaDAO;
 
 
 @Named
@@ -18,54 +18,66 @@ import modelo.schedule.LazyModel;
 public class AgendaMB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private AgendaEvent agendaEvent = new AgendaEvent();
-	private LazyModel lazyEventModel;
-	private Agenda agenda;
-	
+	private Compromisso compromisso = new Compromisso();
+	private List<Compromisso> agenda;
+
 	@PostConstruct
 	public void init() {
 		Calendar calendar = Calendar.getInstance();
 		int firstDay = calendar.getActualMinimum(Calendar.DATE);
-	    int lastDay = calendar.getActualMaximum(Calendar.DATE);
+		int lastDay = calendar.getActualMaximum(Calendar.DATE);
 
-	    calendar.set(Calendar.DATE, firstDay);
-	    Date inicio = calendar.getTime();
-	    
-	    calendar.set(Calendar.DATE, lastDay);
-	    Date fim = calendar.getTime();
-	    
-		lazyEventModel = new LazyModel();
-		lazyEventModel.loadEvents(inicio, fim);
-		
+		calendar.set(Calendar.DATE, firstDay);
+		Date inicio = calendar.getTime();
+
+		calendar.set(Calendar.DATE, lastDay);
+		Date fim = calendar.getTime();
+
+		agenda = new AgendaDAO().buscaPorData(inicio, fim);
 	}
 
-	public AgendaEvent getAgendaEvent() {
-		return agendaEvent;
+	public Compromisso getCompromisso() {
+		return compromisso;
 	}
 
-	public void setAgendaEvent(AgendaEvent agendaEvent) {
-		this.agendaEvent = agendaEvent;
+	public void setCompromisso(Compromisso compromisso) {
+		this.compromisso = compromisso;
 	}
 
-	public LazyModel getLazyEventModel() {
-		return lazyEventModel;
-	}
-
-	public void setLazyEventModel(LazyModel lazyEventModel) {
-		this.lazyEventModel = lazyEventModel;
-	}
-
-	public Agenda getAgenda() {
+	public List<Compromisso> getAgenda() {
 		return agenda;
 	}
 
-	public void setAgenda(Agenda agenda) {
+	public void setAgenda(List<Compromisso> agenda) {
 		this.agenda = agenda;
 	}
-	
-	public void salvarAgenda() {
-		agendaEvent.setData(agenda);
-		
+
+	public void salvarCompromisso() {
+		try {
+			compromisso = new AgendaDAO().salvar(compromisso);
+			if (! agenda.contains(compromisso)) {
+				agenda.add(compromisso);
+			}else {
+				int index = -1;
+				for (int i = 0; i < agenda.size(); i++) {
+					if (agenda.get(index).equals(compromisso)) {
+						index = i;
+					}
+				}
+				if (index >= 0) {
+					agenda.set(index, compromisso);
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
+	public void removerCompromisso() {
+		new AgendaDAO().delete(compromisso);
+		agenda.remove(compromisso);
+		compromisso = new Compromisso();
+	}
+
 }
