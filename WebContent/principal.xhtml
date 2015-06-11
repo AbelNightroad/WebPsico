@@ -27,12 +27,26 @@
 						update=":formcab:messages" />
 
 				</p:schedule>
-
 			</h:panelGrid>
+
+			<div style="width:75%; margin-left: auto; margin-right: auto;">
+				<p:dataTable value="#{agendaMB.agenda}" var="linha"
+					emptyMessage="Nenhum Paciente Agendado para esse mês" >
+					<p:column headerText="Data">
+						<p:outputLabel value="#{linha.dataMarcado}" />
+					</p:column>
+					<p:column headerText="Paciente">
+						<p:outputLabel value="#{linha.paciente.nome}" />
+					</p:column>
+					<p:column headerText="Psicólogo">
+						<p:outputLabel value="#{linha.psicologa.nomeCompleto}" />
+					</p:column>
+				</p:dataTable>
+			</div>
 			<p:dialog widgetVar="eventDialog" header="Marcação de Consulta"
 				resizable="false" showEffect="clip" hideEffect="clip" modal="true"
 				appendTo="@(body)">
-				<p:panelGrid id="eventDetails" styleClass="semBorda" >
+				<p:panelGrid id="eventDetails" styleClass="semBorda">
 					<p:row>
 						<p:column>
 							<h:outputLabel for="nomePaciente" value="Nome do Paciente:" />
@@ -76,7 +90,7 @@
 
 					<p:row>
 						<p:column colspan="3" styleClass="centralizado">
-							<p:commandButton id="marcarBtn" value="Marcar" 
+							<p:commandButton id="marcarBtn" value="Marcar"
 								actionListener="#{scheduleViewMB.addEvent}"
 								oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
 						</p:column>

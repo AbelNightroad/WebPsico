@@ -34,5 +34,35 @@ public class Compromisso implements Serializable, EntidadeBase{
 	public Integer getId() {
 		return id;
 	}
+
+	public Usuario getPsicologa() {
+		return psicologa;
+	}
+
+	public void setPsicologa(Usuario psicologa) {
+		this.psicologa = psicologa;
+	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
+	public Date getDataMarcado() {
+		return dataMarcado;
+	}
+
+	public void setDataMarcado(Date dataMarcado) {
+		this.dataMarcado = dataMarcado;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
 	
 }

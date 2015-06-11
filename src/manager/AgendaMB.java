@@ -1,6 +1,7 @@
 package manager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,9 @@ import persistence.AgendaDAO;
 public class AgendaMB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String nomepac;
+	private String nomepsic;
+	private Date dataInicial = new Date();
 	private Compromisso compromisso = new Compromisso();
 	private List<Compromisso> agenda;
 
@@ -34,6 +38,26 @@ public class AgendaMB implements Serializable {
 		Date fim = calendar.getTime();
 
 		agenda = new AgendaDAO().buscaPorData(inicio, fim);
+		
+		if ((agenda == null) || !(agenda.size() > 0)) {
+			agenda = new ArrayList<Compromisso>();
+		}
+	}
+
+	public String getNomepac() {
+		return nomepac;
+	}
+
+	public void setNomepac(String nomepac) {
+		this.nomepac = nomepac;
+	}
+
+	public String getNomepsic() {
+		return nomepsic;
+	}
+
+	public void setNomepsic(String nomepsic) {
+		this.nomepsic = nomepsic;
 	}
 
 	public Compromisso getCompromisso() {
@@ -50,6 +74,14 @@ public class AgendaMB implements Serializable {
 
 	public void setAgenda(List<Compromisso> agenda) {
 		this.agenda = agenda;
+	}
+
+	public Date getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Date dataInicial) {
+		this.dataInicial = dataInicial;
 	}
 
 	public void salvarCompromisso() {
